@@ -96,7 +96,7 @@ int main(int argc, char *argv[])
 				if(SetStatusLED(&nLedNo,0) == -1)break;	//LED状態設定(3時に出勤にする)
 				nDailyInStatus = 1;
 			}
-			if(pLocalNow->tm_min == 15 && nDailyOutStatus == 0){
+			if(pLocalNow->tm_hour == 15 && nDailyOutStatus == 0){
 				if(SetStatusLED(&nLedNo,1) == -1)break;	//LED状態設定(15時に退勤にする)
 				nDailyOutStatus = 1;
 			}
