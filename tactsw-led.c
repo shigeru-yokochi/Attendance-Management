@@ -19,14 +19,16 @@
 #define GPIO_25		6	//Pin - wiringPi pin 6 is BCM_GPIO 25
 #define GPIO_04		7	//Pin - wiringPi pin 7 is BCM_GPIO 04
 
-
 #define FILE_LED_STAUS      "/tmp/tactsw-led.tmp"
 #define FILE_BEEP_STAUS     "/tmp/beep.tmp"
 #define FILE_ALM_STAUS      "/tmp/alm.tmp"
 
+int nGPIO_Led[4] ={GPIO_17,GPIO_18,GPIO_22,GPIO_23};
+
 //プロトタイプ宣言
 int FileWiteStatus(char *fname,int nNo);
 int FileReadStatus(char *fname);
+int SetStatusLED(int *npLedNo,int nMode);
 /***********************************************************************************
 *	タクトスイッチによる４状態を作る(LED表示あり)
 ***********************************************************************************/
@@ -34,13 +36,11 @@ int main(int argc, char *argv[])
 {
 
     int nTmp,nTactSwitch=0,nLedNo=0,nBeep,nAlm,nLoopCnt=0;
-    int nGPIO_Led[4] ={GPIO_17,GPIO_18,GPIO_22,GPIO_23};
+	int nDailyInStatus = 0,	nDailyOutStatus = 0;
 
-	struct timeval tv_start;
-	struct timeval tv_now;
-	double dfFlightTimeStart;
-	double dfFlightTime;
-	double dfFlightTimeSave=0.;
+	time_t now;
+	struct tm *pLocalNow;
+
 
     if(FileWiteStatus(FILE_LED_STAUS,nLedNo) == -1)return -1;       //LED状態をファイルにファイルに書き込み　初期値
     if(FileWiteStatus(FILE_BEEP_STAUS,0) == -1)return -1;           //BEEP状態をファイルにファイルに書き込み　初期値
@@ -77,7 +77,7 @@ int main(int argc, char *argv[])
 	    usleep(100000);    //100ms
 
         nLoopCnt++;
-        if(nLoopCnt>50){
+        if(nLoopCnt>50){	//約5sec
             if(gethostbyname("yahoo.co.jp") == 0){  //インターネット接続しているか
             	digitalWrite(GPIO_04, HIGH);    //ALM(発生)
             }
@@ -85,6 +85,21 @@ int main(int argc, char *argv[])
             	digitalWrite(GPIO_04, LOW);    //ALM
             }
             nLoopCnt=0;
+
+			now = time(NULL);
+			pLocalNow = localtime(&now);
+			if(pLocalNow->tm_hour == 0){		//0時にリセット
+				nDailyInStatus = 0;
+				nDailyOutStatus = 0;
+			}
+			if(pLocalNow->tm_hour == 3 && nDailyInStatus == 0){
+				if(SetStatusLED(&nLedNo,0) == -1)break;	//LED状態設定(3時に出勤にする)
+				nDailyInStatus = 1;
+			}
+			if(pLocalNow->tm_min == 15 && nDailyOutStatus == 0){
+				if(SetStatusLED(&nLedNo,1) == -1)break;	//LED状態設定(15時に退勤にする)
+				nDailyOutStatus = 1;
+			}
         }
 
         nTmp = digitalRead(GPIO_24);
@@ -92,13 +107,7 @@ int main(int argc, char *argv[])
             nTactSwitch = nTmp;
             printf("%d\n",nTactSwitch);
             if(nTactSwitch == 0){                   //離された？
-            	digitalWrite(nGPIO_Led[nLedNo], LOW);
-                nLedNo++;
-                if(nLedNo >= 4){
-                    nLedNo=0;
-                }
-                if(FileWiteStatus(FILE_LED_STAUS,nLedNo) == -1)break;          //LED状態をファイルに書き込み
-            	digitalWrite(nGPIO_Led[nLedNo], HIGH);
+				if(SetStatusLED(&nLedNo,-1) == -1)break;	//LED状態設定
                 printf("ledNo:%d\n",nLedNo);
             }
                 
@@ -109,16 +118,9 @@ int main(int argc, char *argv[])
         if(nBeep == -1)break;
         if(nBeep == 1){
         	digitalWrite(GPIO_27, HIGH);     //OK
-
-            //beep
-        	//digitalWrite(GPIO_25, LOW);    //beep ON
-            //printf("beep[%d]\n",nBeep);
-            //usleep(200000);    //200ms
-            //if(FileWiteStatus(FILE_BEEP_STAUS,0) == -1)break;         //BEEP状態をファイルに書き込み beep停止
-        	//digitalWrite(GPIO_25, HIGH);    //beep OFF
             	
         	//wav
-        	system("aplay -q /root/aquestalkpi/wav/ok2.wav");	   //wav
+        	system("aplay -q -D hw:1,0 /root/aquestalkpi/wav/ok3.wav");	   //wav
             if(FileWiteStatus(FILE_BEEP_STAUS,0) == -1)break;          //BEEP状態をファイルに書き込み beep停止
             
         	digitalWrite(GPIO_27, LOW);     //OK
@@ -128,7 +130,7 @@ int main(int argc, char *argv[])
         if(nAlm == -1 || nAlm == 2)break;                               //2:実行プロセス数エラー
         if(nAlm == 1){
         	digitalWrite(GPIO_04, HIGH);     //ALM(発生にする)
-        	system("aplay -q /root/aquestalkpi/wav/ng2.wav");	   //wav
+        	system("aplay -q -D hw:1,0 /root/aquestalkpi/wav/ng3.wav");	   //wav
             if(FileWiteStatus(FILE_ALM_STAUS,0) == -1)break;          //ALM状態をファイルに書き込み ALM停止
         	digitalWrite(GPIO_04, LOW);     //ALM
         }
@@ -145,6 +147,33 @@ int main(int argc, char *argv[])
 
 	return 0;
 
+}
+
+
+
+
+/****************************************************************
+*   LED状態設定
+*   npLedNo:0..3
+*	nMode -1:01230123を繰り返す 0..3:指定位置を設定する
+*   return -1:NG 0:OK
+****************************************************************/
+int SetStatusLED(int *npLedNo,int nMode)
+{
+  	digitalWrite(nGPIO_Led[*npLedNo], LOW);
+	if(nMode == -1){
+    	(*npLedNo)++;
+	}
+	else{
+		*npLedNo=nMode;
+	}
+    if(*npLedNo >= 4){
+	    *npLedNo=0;
+   	}
+    if(FileWiteStatus(FILE_LED_STAUS,*npLedNo) == -1)return -1;          //LED状態をファイルに書き込み
+    digitalWrite(nGPIO_Led[*npLedNo], HIGH);
+
+	return 0;
 }
 
 /****************************************************************
