@@ -1,6 +1,9 @@
 # Attendance-Management
 Raspberry Pi とNFCタグリーダを使い勤怠管理
 
+
+![image](https://user-images.githubusercontent.com/12773136/43672910-aad60824-97f3-11e8-8200-b27eb52755a3.jpg)
+
 # 概要
 
 AKASHIの出退勤システムに対してAKASHIのAPIをコールして出退勤の打刻を実現するもの
