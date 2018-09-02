@@ -33,6 +33,7 @@ import argparse
 import hmac, hashlib
 import requests
 import json
+import define
 
 from cli import CommandLineInterface
 
@@ -324,6 +325,8 @@ class TagTool(CommandLineInterface):
     def show_tag(self, tag):
         #-------------ここから追加------------------------
         print("--- start")
+        print(""+define.X_API_KEY)
+        print(""+define.AWS_API_KEY)
         print(tag)
         print(vars(tag))
         tagId = "".join(format(x, '02x') for x in tag._nfcid)
@@ -340,9 +343,9 @@ class TagTool(CommandLineInterface):
             }
             headers = {
                 'Content-type': 'application/json',
-                'x-api-key': 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'
+                'x-api-key': define.X_API_KEY
             }
-            response = requests.post('https://xxxxxxxxxxxxxxxxxxxxxx.execute-api.ap-northeast-1.amazonaws.com/prod/nfc-id',data=json.dumps(data),headers=headers)
+            response = requests.post('https://' + define.AWS_API_KEY + '.execute-api.ap-northeast-1.amazonaws.com/prod/nfc-id',data=json.dumps(data),headers=headers)
             #print(json.dumps(dict(response.headers)))
             print(response.status_code)
             if response.status_code == 200:

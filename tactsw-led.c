@@ -23,7 +23,9 @@
 #define FILE_BEEP_STAUS     "/tmp/beep.tmp"
 #define FILE_ALM_STAUS      "/tmp/alm.tmp"
 
-int nGPIO_Led[4] ={GPIO_17,GPIO_18,GPIO_22,GPIO_23};
+//int nGPIO_Led[4] ={GPIO_17,GPIO_18,GPIO_22,GPIO_23};
+int nGPIO_Led[4] ={GPIO_23,GPIO_22,GPIO_18,GPIO_17};
+
 
 //プロトタイプ宣言
 int FileWiteStatus(char *fname,int nNo);
@@ -96,7 +98,7 @@ int main(int argc, char *argv[])
 				if(SetStatusLED(&nLedNo,0) == -1)break;	//LED状態設定(3時に出勤にする)
 				nDailyInStatus = 1;
 			}
-			if(pLocalNow->tm_hour == 15 && nDailyOutStatus == 0){
+			if(pLocalNow->tm_min == 15 && nDailyOutStatus == 0){
 				if(SetStatusLED(&nLedNo,1) == -1)break;	//LED状態設定(15時に退勤にする)
 				nDailyOutStatus = 1;
 			}
@@ -118,9 +120,9 @@ int main(int argc, char *argv[])
         if(nBeep == -1)break;
         if(nBeep == 1){
         	digitalWrite(GPIO_27, HIGH);     //OK
-            	
+
         	//wav
-        	system("aplay -q -D hw:1,0 /root/aquestalkpi/wav/ok3.wav");	   //wav
+        	system("aplay -q -D plughw:1,0 /root/aquestalkpi/wav/ok3.wav");	   //wav
             if(FileWiteStatus(FILE_BEEP_STAUS,0) == -1)break;          //BEEP状態をファイルに書き込み beep停止
             
         	digitalWrite(GPIO_27, LOW);     //OK
@@ -130,7 +132,8 @@ int main(int argc, char *argv[])
         if(nAlm == -1 || nAlm == 2)break;                               //2:実行プロセス数エラー
         if(nAlm == 1){
         	digitalWrite(GPIO_04, HIGH);     //ALM(発生にする)
-        	system("aplay -q -D hw:1,0 /root/aquestalkpi/wav/ng3.wav");	   //wav
+        	system("aplay -q -D plughw:1,0 /root/aquestalkpi/wav/ng3.wav");	   //wav
+        	system("aplay -q -D plughw:1,0 /root/aquestalkpi/wav/card-not-use.wav");	   //wav
             if(FileWiteStatus(FILE_ALM_STAUS,0) == -1)break;          //ALM状態をファイルに書き込み ALM停止
         	digitalWrite(GPIO_04, LOW);     //ALM
         }
