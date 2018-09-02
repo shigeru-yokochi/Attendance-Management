@@ -13,8 +13,26 @@ NFCタグリーダからIDを呼び出しそのIDに紐づくAKASHIユーザで
 APIを実行する。
 AWSのDynamoDB+APIGAteway+LAMBDAを使用
 
-# アクセスキー設定が必要な箇所
-nfc-tagtool.py
+
+#Raspberry Pi上へのインストール方法
+
+cd /root
+git crone https://github.com/shigeru-yokochi/Attendance-Management.git
+cd Attendance-Management
+
+
+vi define.py  (アクセスキーの設定)
+↓
+X_API_KEY = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+AWS_API_KEY = "xxxxxxxxxxx"
+
+
+cron設定　（監視設定）
+
+```
+* * * * * /root/Attendance-Management/chkProsess.sh
+```
+
 
 
 # 参照
