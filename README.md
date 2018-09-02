@@ -34,6 +34,8 @@ cron設定　（監視設定）
 * * * * * /root/Attendance-Management/chkProsess.sh
 ```
 
+実行権の付与
+chmod 755 nfc-tagtool.py 
 
 
 # 参照
