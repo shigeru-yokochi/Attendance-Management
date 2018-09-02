@@ -14,7 +14,7 @@ APIを実行する。
 AWSのDynamoDB+APIGAteway+LAMBDAを使用
 
 
-#Raspberry Pi上へのインストール方法
+# Raspberry Pi上へのインストール方法
 
 cd /root
 git crone https://github.com/shigeru-yokochi/Attendance-Management.git
@@ -22,10 +22,11 @@ cd Attendance-Management
 
 
 vi define.py  (アクセスキーの設定)
-↓
+
+```
 X_API_KEY = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
 AWS_API_KEY = "xxxxxxxxxxx"
-
+```
 
 cron設定　（監視設定）
 
