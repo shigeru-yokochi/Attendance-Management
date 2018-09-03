@@ -19,7 +19,7 @@ AWSのDynamoDB+APIGAteway+LAMBDAを使用
 ##コードのダウンロード
 
 - cd /root
-- git crone https://github.com/shigeru-yokochi/Attendance-Management.git
+- git clone https://github.com/shigeru-yokochi/Attendance-Management.git
 - cd Attendance-Management
 
 ## vi define.py  (アクセスキーの設定)
