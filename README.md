@@ -44,9 +44,10 @@ chmod 755 nfc-tagtool.py
 vi /etc/rc.local
 以下を追加
 
+```
 /root/Attendance-Management/tactsw-led &
 /root/Attendance-Management/nfc-tagtool.py -l &
-
+```
 
 
 # 参照
