@@ -28,6 +28,9 @@ AWSのDynamoDB+APIGAteway+LAMBDAを使用
 X_API_KEY = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
 AWS_API_KEY = "xxxxxxxxxxx"
 ```
+## make
+
+- make
 
 ## cron設定　（監視設定）
 
