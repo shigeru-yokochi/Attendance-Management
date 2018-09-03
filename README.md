@@ -39,8 +39,8 @@ AWS_API_KEY = "xxxxxxxxxxx"
 ```
 
 ## 実行権の付与
-chmod 755 nfc-tagtool.py 
-
+- chmod 755 nfc-tagtool.py 
+- chmod 755 chkProsess.sh
 
 ## 自動起動設定
 
