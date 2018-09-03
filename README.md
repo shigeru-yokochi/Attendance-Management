@@ -11,7 +11,7 @@ AKASHIの出退勤システムに対してAKASHIのAPIをコールして出退�
 # 構成
 NFCタグリーダからIDを呼び出しそのIDに紐づくAKASHIユーザで
 APIを実行する。
-AWSのDynamoDB+APIGAteway+LAMBDAを使用
+AWSのDynamoDB+APIGAteway+Lambdaを使用
 
 
 # Raspberry Pi上へのインストール方法
