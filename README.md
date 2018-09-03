@@ -11,7 +11,7 @@ AKASHIの出退勤システムに対してAKASHIのAPIをコールして出退�
 # 構成
 NFCタグリーダからIDを呼び出しそのIDに紐づくAKASHIユーザで
 APIを実行する。
-AWSのDynamoDB+APIGAteway+LAMBDAを使用
+AWSのDynamoDB+APIGAteway+Lambdaを使用
 
 
 # Raspberry Pi上へのインストール方法
@@ -19,7 +19,7 @@ AWSのDynamoDB+APIGAteway+LAMBDAを使用
 ##コードのダウンロード
 
 - cd /root
-- git crone https://github.com/shigeru-yokochi/Attendance-Management.git
+- git clone https://github.com/shigeru-yokochi/Attendance-Management.git
 - cd Attendance-Management
 
 ## vi define.py  (アクセスキーの設定)
@@ -28,6 +28,9 @@ AWSのDynamoDB+APIGAteway+LAMBDAを使用
 X_API_KEY = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
 AWS_API_KEY = "xxxxxxxxxxx"
 ```
+## make
+
+- make
 
 ## cron設定　（監視設定）
 
@@ -36,7 +39,18 @@ AWS_API_KEY = "xxxxxxxxxxx"
 ```
 
 ## 実行権の付与
-chmod 755 nfc-tagtool.py 
+- chmod 755 nfc-tagtool.py 
+- chmod 755 chkProsess.sh
+
+## 自動起動設定
+
+vi /etc/rc.local
+以下を追加
+
+```
+/root/Attendance-Management/tactsw-led &
+/root/Attendance-Management/nfc-tagtool.py -l &
+```
 
 
 # 参照
