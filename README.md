@@ -39,6 +39,16 @@ AWS_API_KEY = "xxxxxxxxxxx"
 chmod 755 nfc-tagtool.py 
 
 
+## 自動起動設定
+
+vi /etc/rc.local
+以下を追加
+
+/root/Attendance-Management/tactsw-led &
+/root/Attendance-Management/nfc-tagtool.py -l &
+
+
+
 # 参照
 https://qiita.com/shigeru-yokochi/items/a91c0a3cb1fbb7cafafe
 
