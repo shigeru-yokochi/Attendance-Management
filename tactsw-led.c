@@ -141,10 +141,10 @@ int main(int argc, char *argv[])
         	digitalWrite(GPIO_27, LOW);     //OK
 
 			if(pLocalNow->tm_hour >= 3 && pLocalNow->tm_hour <= 14){
-				SetStatusLED(&nLedNo,0) == -1)break;	//LED状態設定(出勤にする 3..14)
+				SetStatusLED(&nLedNo,0);							//LED状態設定(出勤にする 3..14)
 			}
 			else{
-				SetStatusLED(&nLedNo,1) == -1)break;	//LED状態設定(退勤にする 15..2)
+				SetStatusLED(&nLedNo,1);							//LED状態設定(退勤にする 15..2)
 			}
         }
 
