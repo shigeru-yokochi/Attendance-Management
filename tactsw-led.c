@@ -123,6 +123,20 @@ int main(int argc, char *argv[])
 
         	//wav
         	system("aplay -q -D plughw:1,0 /root/aquestalkpi/wav/ok3.wav");	   //wav
+			switch(nLedNo){
+				case 0:
+		        	system("aplay -q -D plughw:1,0 /root/aquestalkpi/wav/goodmorning.wav");	   //wav
+					break;
+				case 1:
+		        	system("aplay -q -D plughw:1,0 /root/aquestalkpi/wav/goodbye.wav");	   //wav
+					break;
+				case 2:
+		        	system("aplay -q -D plughw:1,0 /root/aquestalkpi/wav/braak-in.wav");	   //wav
+					break;
+				case 3:
+		        	system("aplay -q -D plughw:1,0 /root/aquestalkpi/wav/braak-return.wav");	   //wav
+					break;
+			}
             if(FileWiteStatus(FILE_BEEP_STAUS,0) == -1)break;          //BEEP状態をファイルに書き込み beep停止
             
         	digitalWrite(GPIO_27, LOW);     //OK
