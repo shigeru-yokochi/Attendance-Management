@@ -138,8 +138,14 @@ int main(int argc, char *argv[])
 					break;
 			}
             if(FileWiteStatus(FILE_BEEP_STAUS,0) == -1)break;          //BEEP状態をファイルに書き込み beep停止
-            
         	digitalWrite(GPIO_27, LOW);     //OK
+
+			if(pLocalNow->tm_hour >= 3 && pLocalNow->tm_hour <= 14){
+				SetStatusLED(&nLedNo,0) == -1)break;	//LED状態設定(出勤にする 3..14)
+			}
+			else{
+				SetStatusLED(&nLedNo,1) == -1)break;	//LED状態設定(退勤にする 15..2)
+			}
         }
 
         nAlm = FileReadStatus(FILE_ALM_STAUS);                         //ALM状態をファイルから読み込み
@@ -165,10 +171,6 @@ int main(int argc, char *argv[])
 	return 0;
 
 }
-
-
-
-
 /****************************************************************
 *   LED状態設定
 *   npLedNo:0..3
