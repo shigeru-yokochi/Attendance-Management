@@ -7,6 +7,8 @@ Raspberry Pi とNFCタグリーダを使い勤怠管理
 # 概要
 
 AKASHIの出退勤システムに対してAKASHIのAPIをコールして出退勤の打刻を実現するもの
+本コードは装置内のプログラム部であり、ユーザデータ用のDB管理についての説明は割愛しています。
+
 
 # 構成
 NFCタグリーダからIDを呼び出しそのIDに紐づくAKASHIユーザで
@@ -15,8 +17,6 @@ AWSのDynamoDB+APIGAteway+Lambdaを使用
 
 
 # Raspberry Pi上へのインストール方法
-
-##コードのダウンロード
 
 - cd /root
 - git clone https://github.com/shigeru-yokochi/Attendance-Management.git
