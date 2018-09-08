@@ -23,9 +23,7 @@
 #define FILE_BEEP_STAUS     "/tmp/beep.tmp"
 #define FILE_ALM_STAUS      "/tmp/alm.tmp"
 
-//int nGPIO_Led[4] ={GPIO_17,GPIO_18,GPIO_22,GPIO_23};
-int nGPIO_Led[4] ={GPIO_23,GPIO_22,GPIO_18,GPIO_17};
-
+int nGPIO_Led[4] ={GPIO_23,GPIO_22,GPIO_18,GPIO_17};	//出勤,退勤,休入,休戻
 
 //プロトタイプ宣言
 int FileWiteStatus(char *fname,int nNo);
